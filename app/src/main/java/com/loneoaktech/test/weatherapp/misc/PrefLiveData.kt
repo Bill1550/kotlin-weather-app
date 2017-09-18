@@ -8,7 +8,7 @@ import android.content.SharedPreferences
  *
  * Created by BillH on 9/17/2017.
  */
-class PrefLiveData<T>(private val preferences: SharedPreferences, val key: String,
+class PrefLiveData<T>(private val preferences: SharedPreferences, private val key: String,
                       private val map: (p: SharedPreferences, k:String)->T?) : LiveData<T>() {
     init {
         if (preferences.contains(key))

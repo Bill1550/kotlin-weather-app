@@ -4,7 +4,7 @@ package com.loneoaktech.test.weatherapp.model
  * Generic class for a resouce (data item) that is loaded or validated asynchronsously
  * Created by BillH on 9/17/2017.
  */
-data class AsyncResource<T>
+data class AsyncResource<out T>
     constructor(val status: Status, val data: T?, val msg: String?)
 {
     companion object {

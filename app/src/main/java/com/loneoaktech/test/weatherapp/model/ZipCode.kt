@@ -32,7 +32,7 @@ class ZipCode(private val _zip: Int){
 
         /**
          * Checks string to make sure that it is a valid looking zip code.
-         * Does not check if it is an actual valid zipcode
+         * Does not check if it is an actual valid zip code
          */
         fun isValidZipCodeString(value: String): Boolean = VALIDATE_REGEX.matcher(value).find()
     }

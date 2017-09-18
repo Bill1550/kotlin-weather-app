@@ -40,7 +40,7 @@ class ZipEntryFragment : Fragment(){
         _locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)?.apply {
             selectedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
-                zipCodeText.setText( it?.zipCode.toString() ?: "" )
+                zipCodeText.setText(it?.zipCode.toString())
             })
 
             errorMessage.observe(this@ZipEntryFragment, Observer<String> {
@@ -58,7 +58,6 @@ class ZipEntryFragment : Fragment(){
                 }
             })
         }
-
     }
 
     // Handles end-of-editing events from the zip entry

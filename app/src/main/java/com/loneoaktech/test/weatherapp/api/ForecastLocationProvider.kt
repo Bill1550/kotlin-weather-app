@@ -1,11 +1,9 @@
 package com.loneoaktech.test.weatherapp.api
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.location.Geocoder
 import android.os.AsyncTask
-import android.provider.ContactsContract
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
@@ -76,6 +74,4 @@ class ForecastLocationProvider(appContext : Context){
             liveData.value = result
         }
     }
-
-
 }
