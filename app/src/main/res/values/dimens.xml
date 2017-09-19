@@ -1,3 +1,10 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="summary_top_margin">12dp</dimen>
+    <dimen name="summary_horizontal_margin">18dp</dimen>
+    <dimen name="location_name_text_size">18sp</dimen>
+    <dimen name="current_weather_text_size">22sp</dimen>
+    <dimen name="dialog_horizontal_margin">20dp</dimen>
+    <dimen name="dialog_vertical_margin">20dp</dimen>
+    <dimen name="action_bar_height">48dp</dimen>
 </resources>

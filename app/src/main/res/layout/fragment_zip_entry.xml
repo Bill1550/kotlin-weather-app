@@ -5,8 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="240dp"
     tools:context="com.loneoaktech.test.weatherapp.ZipEntryFragment"
     >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_enter_zip_code"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/dialog_horizontal_margin"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop = "@dimen/dialog_vertical_margin"
+        style="@style/DialogText"
+        />
 
     <EditText
         android:id="@+id/zipCodeText"
@@ -14,12 +28,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:hint="@string/label_enter_zipcode"
         android:inputType="number"
         android:maxLength="5"
+        android:focusableInTouchMode="true"
 
         />
 
@@ -32,6 +47,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/zipCodeText"
         android:layout_marginTop="4dp"
+        android:visibility="gone"
         />
 
     <TextView
@@ -43,6 +59,18 @@
         app:layout_constraintTop_toBottomOf="@+id/locationNameText"
         android:textColor="#FF00"
         tools:text="Error message"
+        />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorText"
+        android:layout_marginEnd="@dimen/dialog_horizontal_margin"
+        android:layout_marginTop="0dp"
+        android:text="@string/button_label_cancel"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         />
 
 </android.support.constraint.ConstraintLayout>

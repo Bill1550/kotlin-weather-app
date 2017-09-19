@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.loneoaktech.test.weatherapp.ZipEntryFragment"
+    >
+
+    <ImageView
+        android:id="@+id/menuIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/locationNameText"
+        app:layout_constraintTop_toTopOf="@+id/locationNameText"
+        app:layout_constraintBottom_toBottomOf="@id/locationNameText"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        android:layout_marginStart="@dimen/summary_horizontal_margin"
+        android:src="@drawable/ic_menu_black_24dp"
+        android:visibility="invisible"
+        android:contentDescription="@string/description_menu"/>
+
+    <TextView
+        android:id="@+id/locationNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Newtown, CT 6470"
+        app:layout_constraintStart_toEndOf="@+id/menuIcon"
+        app:layout_constraintEnd_toStartOf="@+id/selectLocation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/topPanelBottomGuide"
+        android:textSize="@dimen/location_name_text_size"
+        />
+
+    <ImageView
+        android:id="@+id/selectLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/locationNameText"
+        app:layout_constraintTop_toTopOf="@+id/locationNameText"
+        app:layout_constraintBottom_toBottomOf="@id/locationNameText"
+        android:layout_marginEnd="@dimen/summary_horizontal_margin"
+        android:src="@drawable/ic_search_black_24dp"
+        android:contentDescription="@string/description_selection_location"
+        />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/topPanelBottomGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".10"
+        />
+
+    <TextView
+        android:id="@+id/currentTemperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/topPanelBottomGuide"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/currentSummary"
+        tools:text="74°"
+        android:textSize = "@dimen/current_weather_text_size"
+        />
+
+    <TextView
+        android:id="@+id/currentSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/topPanelBottomGuide"
+        app:layout_constraintStart_toEndOf="@id/currentTemperatureText"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_horizontal"
+        tools:text="Sunny"
+        android:textSize = "@dimen/current_weather_text_size"
+        />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -9,6 +9,6 @@ data class DataPoint(
         val summary: String,
         val icon: String,
         val temperature: Double,
-        val maxTemperature: Double,
-        val minTemperature: Double
+        val temperatureMin: Double,
+        val temperatureMax: Double
 )

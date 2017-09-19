@@ -3,11 +3,8 @@ package com.loneoaktech.test.weatherapp
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v4.app.DialogFragment
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
@@ -22,15 +19,22 @@ import timber.log.Timber
  *
  * Created by BillH on 9/16/2017.
  */
-class ZipEntryFragment : Fragment(){
+class ZipEntryFragment : DialogFragment(){
     private var _locationModel: LocationViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_zip_entry, container, false).apply {
-            this.zipCodeText.setOnEditorActionListener(_zipActionListener)
-            this.zipCodeText.onFocusChangeListener = _zipFocusChangeListener
-            this.zipCodeText.setOnClickListener(_zipClickListener)
-            this.zipCodeText.isCursorVisible=false
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog)
+        dialog.window.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
+        dialog.window.attributes = dialog.window.attributes.apply{
+            y = resources.getDimensionPixelOffset(R.dimen.action_bar_height)
+        }
+
+        return inflater.inflate(R.layout.fragment_zip_entry, container, false).also { rv ->
+            rv.zipCodeText.setOnEditorActionListener(_zipActionListener)
+            rv.zipCodeText.onFocusChangeListener = _zipFocusChangeListener
+            rv.zipCodeText.setOnClickListener(_zipClickListener)
+            rv.zipCodeText.isCursorVisible=false
+            rv.cancelButton.setOnClickListener { dismiss() }
         }
     }
 
@@ -38,6 +42,7 @@ class ZipEntryFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
 
         _locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)?.apply {
+            // Subscribe to the model
             selectedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
                 zipCodeText.setText(it?.zipCode.toString())
@@ -54,11 +59,12 @@ class ZipEntryFragment : Fragment(){
                 // if fragment is still active.
                 if (it != null) {
                     selectLocation(it)
-                    // *** End dialog
+                    this@ZipEntryFragment.dismiss()
                 }
             })
         }
     }
+
 
     // Handles end-of-editing events from the zip entry
     private val _zipActionListener = TextView.OnEditorActionListener { v, actionId, event ->
@@ -77,7 +83,12 @@ class ZipEntryFragment : Fragment(){
 
     private val _zipFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
         (v as EditText).run {
-            if (!hasFocus)
+            if (hasFocus) {
+                dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+                selectAll()
+                isCursorVisible = true
+            }
+            else
                 validateZipCodeInput(text)
         }
     }

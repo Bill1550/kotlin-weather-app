@@ -2,4 +2,8 @@
     <string name="app_name">WeatherApp</string>
     <string name="action_settings">Settings</string>
     <string name="label_enter_zipcode">Zip Code</string>
+    <string name="description_selection_location">Select Location</string>
+    <string name="description_menu">Menu</string>
+    <string name="title_enter_zip_code">Enter Zip Code:</string>
+    <string name="button_label_cancel">Cancel</string>
 </resources>

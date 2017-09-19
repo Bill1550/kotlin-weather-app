@@ -6,8 +6,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.zip.ZipEntry
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        val TAG_FORECAST_SUMMARY = "forecast_summary"
+        val TAG_ZIP_ENTRY = "zip_entry"
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         fab.visibility = View.GONE
 
         if (savedInstanceState == null){
-            val fragment = ZipEntryFragment()
+            val fragment = ForecastSummaryFragment() //ZipEntryFragment()
             supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment, fragment)
+                    .add(R.id.fragment, fragment, TAG_FORECAST_SUMMARY)
                     .commit()
         }
     }
@@ -40,4 +46,8 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+
+    fun showLocationEntryFragment(){
+        ZipEntryFragment().show(supportFragmentManager, TAG_ZIP_ENTRY)
+    }
 }
