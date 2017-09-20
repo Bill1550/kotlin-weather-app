@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.loneoaktech.test.weatherapp.api.HiottDarkSkyService
+import com.loneoaktech.test.weatherapp.api.WeatherApiService
+import com.loneoaktech.test.weatherapp.di.Injectable
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
@@ -16,19 +18,22 @@ import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
 import kotlinx.android.synthetic.main.fragment_forecast_summary.view.*
 import kotlinx.android.synthetic.main.fragment_forecast_summary.*
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * The "home" fragment. Shows the forecast summary and provides a button to initiate zip entry.
  *
  * Created by BillH on 9/18/2017.
  */
-class ForecastSummaryFragment : Fragment() {
+class ForecastSummaryFragment : Fragment(), Injectable {
     private var _locationModel: LocationViewModel? = null
-    private lateinit var _forecastProviderHiott: HiottDarkSkyService // TODO remove, for test only, replace w/ ViewModel
+
+    @Inject
+    lateinit var _forecastService: WeatherApiService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _forecastProviderHiott = HiottDarkSkyService(context.applicationContext)
+        _forecastService = HiottDarkSkyService(context.applicationContext)
         return inflater.inflate(R.layout.fragment_forecast_summary, container, false).also{ rv ->
             rv.selectLocation.setOnClickListener({
                 Timber.w("Click!")
@@ -41,12 +46,14 @@ class ForecastSummaryFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+//        _forecastService = HiottDarkSkyService(context.applicationContext)
+
         _locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)?.apply {
             selectedLocation.observe(this@ForecastSummaryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
 
                 it?.let { loc ->
-                    _forecastProviderHiott.getForecast(loc).observe(this@ForecastSummaryFragment, Observer { result ->
+                    _forecastService.getForecast(loc).observe(this@ForecastSummaryFragment, Observer { result ->
                         result?.let {
                             displayForecast(it)
                         }

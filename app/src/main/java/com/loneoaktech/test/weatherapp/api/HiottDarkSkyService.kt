@@ -21,7 +21,7 @@ import retrofit.client.Response
  */
 const val DARK_SKY_API_KEY = "c87d6c62bfb0c97670c2f79eb05c699f"
 
-class HiottDarkSkyService(appContext: Context) : WeatherProvider {
+class HiottDarkSkyService(appContext: Context) : WeatherApiService {
     private val _appContext = appContext.applicationContext  // Ensure that it is an app context
 
     init{
