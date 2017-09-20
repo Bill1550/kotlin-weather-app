@@ -32,6 +32,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$architectureLibVersion"
     implementation "com.jakewharton.timber:timber:${timberVersion}"   // Logging lib
     implementation 'com.google.code.gson:gson:2.8.0'
+    implementation "com.github.johnhiott:DarkSkyApi:v0.1.5"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'

@@ -1,4 +1,4 @@
-package com.loneoaktech.test.weatherapp.misc
+package com.loneoaktech.test.weatherapp.api
 
 import android.arch.lifecycle.LiveData
 import android.content.SharedPreferences
@@ -8,8 +8,8 @@ import android.content.SharedPreferences
  *
  * Created by BillH on 9/17/2017.
  */
-class PrefLiveData<T>(private val preferences: SharedPreferences, private val key: String,
-                      private val map: (p: SharedPreferences, k:String)->T?) : LiveData<T>() {
+class SharedPreferenceLiveData<T>(private val preferences: SharedPreferences, private val key: String,
+                                  private val map: (p: SharedPreferences, k:String)->T?) : LiveData<T>() {
     init {
         if (preferences.contains(key))
             value = map(preferences, key)

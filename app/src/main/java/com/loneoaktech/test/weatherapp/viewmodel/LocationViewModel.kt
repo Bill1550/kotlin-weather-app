@@ -7,7 +7,7 @@ import android.arch.lifecycle.Transformations
 import android.preference.PreferenceManager
 import com.google.gson.Gson
 import com.loneoaktech.test.weatherapp.api.ForecastLocationProvider
-import com.loneoaktech.test.weatherapp.misc.PrefLiveData
+import com.loneoaktech.test.weatherapp.api.SharedPreferenceLiveData
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
@@ -26,11 +26,10 @@ class LocationViewModel(app: Application) : AndroidViewModel(app){
     private val _locationProvider = ForecastLocationProvider(getApplication())
 
     // Use a LiveData to track the preference. Ensures that active value always matches persisted value.
-    private val _selectedLocation = PrefLiveData(getSharedPreferences(), KEY_SELECTED_LOCATION){
-        p,k->
+    private val _selectedLocation = SharedPreferenceLiveData(getSharedPreferences(), KEY_SELECTED_LOCATION) { p, k ->
         try {
             _gson.fromJson(p.getString(k, null), ForecastLocation::class.java)
-        } catch (ex: Exception){
+        } catch (ex: Exception) {
             null
         }
     }
@@ -45,7 +44,7 @@ class LocationViewModel(app: Application) : AndroidViewModel(app){
      *  Ensures that persisted value only changes if fragment is still alive.
      */
     val validatedLocation: LiveData<ForecastLocation> =
-            Transformations.map<AsyncResource<ForecastLocation>, ForecastLocation>(_locationProvider.result){
+            Transformations.map<AsyncResource<ForecastLocation>, ForecastLocation>(_locationProvider.selectedLocation){
             when(it.status){
                 AsyncResource.Companion.Status.SUCCESS -> it.data
                 else -> null
@@ -53,7 +52,7 @@ class LocationViewModel(app: Application) : AndroidViewModel(app){
         }
 
     val errorMessage: LiveData<String> =
-            Transformations.map<AsyncResource<ForecastLocation>,String>(_locationProvider.result) {
+            Transformations.map<AsyncResource<ForecastLocation>,String>(_locationProvider.selectedLocation) {
             when(it.status){
                 AsyncResource.Companion.Status.ERROR -> it.msg  // TODO look up better message
                 else ->  ""

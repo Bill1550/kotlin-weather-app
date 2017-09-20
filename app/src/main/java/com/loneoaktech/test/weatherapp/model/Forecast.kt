@@ -7,7 +7,7 @@ package com.loneoaktech.test.weatherapp.model
 data class Forecast(
         val location: ForecastLocation,
         val time: Long,
-        val currently: DataPoint,
+        val currently: DataPoint?,
         val hourly: List<DataPoint>,
         val daily: List<DataPoint>
 )

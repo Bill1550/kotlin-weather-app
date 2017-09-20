@@ -1,5 +1,6 @@
 package com.loneoaktech.test.weatherapp.api
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.location.Geocoder
@@ -19,24 +20,31 @@ import java.lang.ref.WeakReference
  * Created by BillH on 9/17/2017.
  */
 class ForecastLocationProvider(appContext : Context){
-    private val _appContext = appContext
+    private val _appContext = appContext.applicationContext // ensure that it is an app context.
     private val _result = MutableLiveData<AsyncResource<ForecastLocation>>()
 
-    val result get()=_result
 
     companion object {
+        // Error codes
         const val NETWORK_ERROR = "Network Error"
         const val INVALID_ZIP = "Invalid Zip Code"
         const val GENERAL_ERROR = "General Error"
     }
 
+    /**
+     * The selected location. Set from the persisted value, can be reset by a lookup
+     * initiated by a fromZipCode() call,
+     */
+    val selectedLocation: LiveData<AsyncResource<ForecastLocation>> get()=_result
 
 
+    /**
+     * Initiates a location load from a zip code.
+     */
     fun fromZipCode(zip: ZipCode) {
         Timber.i("FromZipCode: %s", zip)
         AsyncLoader(_appContext, _result).execute(zip)
     }
-
 
     private class AsyncLoader constructor(context: Context, val liveData: MutableLiveData<AsyncResource<ForecastLocation>>)
         : AsyncTask<ZipCode,Int,AsyncResource<ForecastLocation>>() {

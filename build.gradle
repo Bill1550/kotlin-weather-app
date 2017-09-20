@@ -31,6 +31,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.2'}      // for Kotlin 1.2 beta
+        maven { url "https://jitpack.io" }
     }
 }
 
