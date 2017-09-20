@@ -14,14 +14,16 @@ import java.lang.ref.WeakReference
 /**
  * The Android Geocoding api actually does a network access which can block, so it should
  * be run on a background thread which can create context leakage opportunities.
- * THis is implemented as separate data source component to allow data injection to help
+ * This is implemented as separate data source component to allow data injection to help
  * manage the context.
+ * Also caches requests. (The google location lookup API seems to take longer than the DarkSky API)
  *
  * Created by BillH on 9/17/2017.
  */
-class ForecastLocationProvider(appContext : Context){
+class ForecastLocationService(appContext : Context){
     private val _appContext = appContext.applicationContext // ensure that it is an app context.
     private val _result = MutableLiveData<AsyncResource<ForecastLocation>>()
+    private val _cache = HashMap<ZipCode,ForecastLocation>()
 
 
     companion object {
@@ -43,15 +45,22 @@ class ForecastLocationProvider(appContext : Context){
      */
     fun fromZipCode(zip: ZipCode) {
         Timber.i("FromZipCode: %s", zip)
-        AsyncLoader(_appContext, _result).execute(zip)
+
+        // check cache
+        _cache[zip]?.run{
+            _result.postValue(AsyncResource.success(this))
+            return
+        }
+
+        AsyncLoader(_appContext){_result.value=it}.execute(zip)
     }
 
-    private class AsyncLoader constructor(context: Context, val liveData: MutableLiveData<AsyncResource<ForecastLocation>>)
+    private class AsyncLoader constructor(context: Context, val handler: (AsyncResource<ForecastLocation>)->Unit)
         : AsyncTask<ZipCode,Int,AsyncResource<ForecastLocation>>() {
         private val _contextRef: WeakReference<Context> = WeakReference(context)
 
         override fun onPreExecute() {
-            liveData.value = AsyncResource.loading()
+           handler(AsyncResource.loading())
         }
 
         override fun doInBackground(vararg p0: ZipCode?): AsyncResource<ForecastLocation> {
@@ -77,9 +86,9 @@ class ForecastLocationProvider(appContext : Context){
             }
         }
 
-        override fun onPostExecute(result: AsyncResource<ForecastLocation>?) {
+        override fun onPostExecute(result: AsyncResource<ForecastLocation>) {
             Timber.i("onPostExecute: %s", result)
-            liveData.value = result
+            handler(result)
         }
     }
 }

@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.loneoaktech.test.weatherapp.api.DarkSkyProvider
+import com.loneoaktech.test.weatherapp.api.HiottDarkSkyService
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
@@ -24,11 +24,11 @@ import timber.log.Timber
  */
 class ForecastSummaryFragment : Fragment() {
     private var _locationModel: LocationViewModel? = null
-    private lateinit var _forecastProvider : DarkSkyProvider; // TODO remove, for test only
+    private lateinit var _forecastProviderHiott: HiottDarkSkyService // TODO remove, for test only, replace w/ ViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _forecastProvider = DarkSkyProvider(context.applicationContext)
+        _forecastProviderHiott = HiottDarkSkyService(context.applicationContext)
         return inflater.inflate(R.layout.fragment_forecast_summary, container, false).also{ rv ->
             rv.selectLocation.setOnClickListener({
                 Timber.w("Click!")
@@ -46,7 +46,7 @@ class ForecastSummaryFragment : Fragment() {
                 locationNameText.text = it?.title ?: "-----"
 
                 it?.let { loc ->
-                    _forecastProvider.getForecast(loc).observe(this@ForecastSummaryFragment, Observer { result ->
+                    _forecastProviderHiott.getForecast(loc).observe(this@ForecastSummaryFragment, Observer { result ->
                         result?.let {
                             displayForecast(it)
                         }

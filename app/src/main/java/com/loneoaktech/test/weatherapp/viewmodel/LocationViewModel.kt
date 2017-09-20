@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.preference.PreferenceManager
 import com.google.gson.Gson
-import com.loneoaktech.test.weatherapp.api.ForecastLocationProvider
+import com.loneoaktech.test.weatherapp.api.ForecastLocationService
 import com.loneoaktech.test.weatherapp.api.SharedPreferenceLiveData
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
@@ -23,7 +23,7 @@ const val KEY_SELECTED_LOCATION = "selected_location"
 
 class LocationViewModel(app: Application) : AndroidViewModel(app){
     private val _gson = Gson()
-    private val _locationProvider = ForecastLocationProvider(getApplication())
+    private val _locationProvider = ForecastLocationService(getApplication())
 
     // Use a LiveData to track the preference. Ensures that active value always matches persisted value.
     private val _selectedLocation = SharedPreferenceLiveData(getSharedPreferences(), KEY_SELECTED_LOCATION) { p, k ->
