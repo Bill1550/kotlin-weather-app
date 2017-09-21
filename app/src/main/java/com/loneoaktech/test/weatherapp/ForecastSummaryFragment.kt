@@ -15,8 +15,9 @@ import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.ui.getWeatherIcon
 import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
-import kotlinx.android.synthetic.main.fragment_forecast_summary.view.*
+import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModelFactory
 import kotlinx.android.synthetic.main.fragment_forecast_summary.*
+import kotlinx.android.synthetic.main.fragment_forecast_summary.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -30,6 +31,9 @@ class ForecastSummaryFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var _forecastService: WeatherApiService
+
+    @Inject
+    lateinit var _locationViewModelFactory : LocationViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,10 +49,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-//        _forecastService = HiottDarkSkyService(context.applicationContext)
-
-        _locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)?.apply {
+        _locationModel = ViewModelProviders.of(this,_locationViewModelFactory).get(LocationViewModel::class.java)?.apply {
             selectedLocation.observe(this@ForecastSummaryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
 

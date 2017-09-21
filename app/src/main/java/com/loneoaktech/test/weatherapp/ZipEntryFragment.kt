@@ -8,19 +8,25 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import com.loneoaktech.test.weatherapp.di.Injectable
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
 import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
+import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModelFactory
 import kotlinx.android.synthetic.main.fragment_zip_entry.*
 import kotlinx.android.synthetic.main.fragment_zip_entry.view.*
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  *
  * Created by BillH on 9/16/2017.
  */
-class ZipEntryFragment : DialogFragment(){
+class ZipEntryFragment : DialogFragment(), Injectable {
     private var _locationModel: LocationViewModel? = null
+
+    @Inject
+    lateinit var _locationViewModelFactory : LocationViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog)
@@ -41,7 +47,8 @@ class ZipEntryFragment : DialogFragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        _locationModel = ViewModelProviders.of(this).get(LocationViewModel::class.java)?.apply {
+        _locationModel = ViewModelProviders.of(this, _locationViewModelFactory)
+                .get(LocationViewModel::class.java)?.apply {
             // Subscribe to the model
             selectedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"

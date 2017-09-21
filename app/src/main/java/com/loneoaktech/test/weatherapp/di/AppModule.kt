@@ -3,6 +3,8 @@ package com.loneoaktech.test.weatherapp.di
 import com.loneoaktech.test.weatherapp.ForecastSummaryFragment
 import com.loneoaktech.test.weatherapp.MainActivity
 import com.loneoaktech.test.weatherapp.WeatherAppApplication
+import com.loneoaktech.test.weatherapp.ZipEntryFragment
+import com.loneoaktech.test.weatherapp.api.AndroidZipLocationService
 import com.loneoaktech.test.weatherapp.api.ForecastLocationService
 import com.loneoaktech.test.weatherapp.api.HiottDarkSkyService
 import com.loneoaktech.test.weatherapp.api.WeatherApiService
@@ -17,15 +19,17 @@ import javax.inject.Singleton
  *
  * Created by BillH on 9/20/2017.
  */
-//@Qualifier
-//@Retention(AnnotationRetention.RUNTIME)
-//annotation class AppContext
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class AppContext
 
 
+//@Module(includes = arrayOf(ViewModelModule::class)) - not used due to an internal error in KAPT, created individual ViewModelFactories w/ constructor injection
 @Module
 class AppModule(val app:WeatherAppApplication){
 
-    @Provides @Singleton fun provideForecastLocationService() : ForecastLocationService = ForecastLocationService(app)
+    @Provides @Singleton fun provideForecastLocationService() : ForecastLocationService = AndroidZipLocationService(app)
 
     @Provides @Singleton fun provideWeatherApiService() : WeatherApiService = HiottDarkSkyService(app)
 }
@@ -45,5 +49,9 @@ abstract class FragmentBuilderModule {
     @Suppress("unused")
     @ContributesAndroidInjector
     abstract fun contributeForecastSummaryFragment(): ForecastSummaryFragment
+
+    @Suppress("unused")
+    @ContributesAndroidInjector
+    abstract fun contributeZipEntryFragment(): ZipEntryFragment
 }
 

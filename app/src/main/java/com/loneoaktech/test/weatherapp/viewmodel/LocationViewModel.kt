@@ -1,9 +1,7 @@
 package com.loneoaktech.test.weatherapp.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.*
 import android.preference.PreferenceManager
 import com.google.gson.Gson
 import com.loneoaktech.test.weatherapp.api.ForecastLocationService
@@ -12,6 +10,8 @@ import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * ViewModel of the selected forecast location.
@@ -21,9 +21,14 @@ import timber.log.Timber
  */
 const val KEY_SELECTED_LOCATION = "selected_location"
 
-class LocationViewModel(app: Application) : AndroidViewModel(app){
+class LocationViewModel
+    constructor(app: Application, val _locationProvider:ForecastLocationService)
+    : AndroidViewModel(app){
+
     private val _gson = Gson()
-    private val _locationProvider = ForecastLocationService(getApplication())
+
+//    @Inject lateinit
+//    var _locationProvider : ForecastLocationService = AndroidZipLocationService(getApplication())
 
     // Use a LiveData to track the preference. Ensures that active value always matches persisted value.
     private val _selectedLocation = SharedPreferenceLiveData(getSharedPreferences(), KEY_SELECTED_LOCATION) { p, k ->
@@ -63,11 +68,11 @@ class LocationViewModel(app: Application) : AndroidViewModel(app){
      /**
      * Initiates a zip code validation
      */
-    fun validateZipCode(zip: ZipCode) = _locationProvider.fromZipCode(zip)
+    fun validateZipCode(zip: ZipCode) = _locationProvider.selectZipCode(zip)
 
 
     /**
-     * sets and presists the selected location value.
+     * sets and persists the selected location value.
      */
     fun selectLocation(location: ForecastLocation){
 //        _selectedLocation.value = location
@@ -83,4 +88,18 @@ class LocationViewModel(app: Application) : AndroidViewModel(app){
     }
 
     private fun getSharedPreferences() = PreferenceManager.getDefaultSharedPreferences(getApplication())
+}
+
+@Singleton
+class LocationViewModelFactory
+    @Inject constructor(val app: Application, private val locationProvider: ForecastLocationService)
+    : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        return if (modelClass==LocationViewModel::class.java)
+            LocationViewModel(app, locationProvider) as T
+        else throw IllegalArgumentException("Unrecogmized class")
+
+    }
 }

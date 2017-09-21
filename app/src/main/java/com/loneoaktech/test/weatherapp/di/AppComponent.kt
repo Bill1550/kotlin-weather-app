@@ -2,6 +2,7 @@ package com.loneoaktech.test.weatherapp.di
 
 import android.app.Application
 import com.loneoaktech.test.weatherapp.WeatherAppApplication
+import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -29,4 +30,5 @@ interface AppComponent {
     }
 
     fun inject(app: WeatherAppApplication)
+    fun inject(locationModel: LocationViewModel)
 }
