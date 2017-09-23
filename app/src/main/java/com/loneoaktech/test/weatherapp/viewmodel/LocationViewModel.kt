@@ -2,14 +2,11 @@ package com.loneoaktech.test.weatherapp.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.*
-import android.preference.PreferenceManager
-import com.google.gson.Gson
-import com.loneoaktech.test.weatherapp.api.ForecastLocationService
-import com.loneoaktech.test.weatherapp.api.SharedPreferenceLiveData
+import android.support.v4.app.Fragment
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
-import timber.log.Timber
+import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,29 +16,18 @@ import javax.inject.Singleton
  *
  * Created by BillH on 9/17/2017.
  */
-const val KEY_SELECTED_LOCATION = "selected_location"
+const val KEY_SELECTED_LOCATION = "selected_location" // shared prefs key
 
+// (Injection is handled by factory below, since the ViewModelProvider maintains the VM instances
 class LocationViewModel
-    constructor(app: Application, val _locationProvider:ForecastLocationService)
-    : AndroidViewModel(app){
+    constructor(private val _locationRepo: SelectedLocationRepository )
+    : ViewModel(){
 
-    private val _gson = Gson()
-
-//    @Inject lateinit
-//    var _locationProvider : ForecastLocationService = AndroidZipLocationService(getApplication())
-
-    // Use a LiveData to track the preference. Ensures that active value always matches persisted value.
-    private val _selectedLocation = SharedPreferenceLiveData(getSharedPreferences(), KEY_SELECTED_LOCATION) { p, k ->
-        try {
-            _gson.fromJson(p.getString(k, null), ForecastLocation::class.java)
-        } catch (ex: Exception) {
-            null
-        }
-    }
+    private val _validateResult = MediatorLiveData<AsyncResource<ForecastLocation>>()
 
 
     val selectedLocation: LiveData<ForecastLocation>
-        get() = _selectedLocation
+        get() = _locationRepo.getSelectedLocation()
 
     /**
      *  The location back from validation/lookup, but not persisted.
@@ -49,16 +35,16 @@ class LocationViewModel
      *  Ensures that persisted value only changes if fragment is still alive.
      */
     val validatedLocation: LiveData<ForecastLocation> =
-            Transformations.map<AsyncResource<ForecastLocation>, ForecastLocation>(_locationProvider.selectedLocation){
-            when(it.status){
+            Transformations.map<AsyncResource<ForecastLocation>?, ForecastLocation>(_validateResult){
+            when(it?.status){
                 AsyncResource.Companion.Status.SUCCESS -> it.data
                 else -> null
             }
         }
 
     val errorMessage: LiveData<String> =
-            Transformations.map<AsyncResource<ForecastLocation>,String>(_locationProvider.selectedLocation) {
-            when(it.status){
+            Transformations.map<AsyncResource<ForecastLocation>?,String>(_validateResult) {
+            when(it?.status){
                 AsyncResource.Companion.Status.ERROR -> it.msg  // TODO look up better message
                 else ->  ""
             }
@@ -68,38 +54,39 @@ class LocationViewModel
      /**
      * Initiates a zip code validation
      */
-    fun validateZipCode(zip: ZipCode) = _locationProvider.selectZipCode(zip)
+    fun validateZipCode(zip: ZipCode){
+        val validateSource = _locationRepo.validateZipCode(zip)
+        _validateResult.addSource(validateSource){
+            if ((it != null) && (it.status!=AsyncResource.Companion.Status.LOADING))
+                _validateResult.removeSource(validateSource)
+            _validateResult.value = it
+        }
+     }
 
+    fun clearValidation() { _validateResult.value = null}
 
     /**
      * sets and persists the selected location value.
      */
     fun selectLocation(location: ForecastLocation){
-//        _selectedLocation.value = location
-
-        // persist
-        val locationJson = _gson.toJson(location)
-        Timber.i("Location json: %s", locationJson)
-
-        getSharedPreferences()
-                .edit()
-                .putString(KEY_SELECTED_LOCATION, locationJson)
-                .apply()
+        _locationRepo.selectLocation(location)
     }
-
-    private fun getSharedPreferences() = PreferenceManager.getDefaultSharedPreferences(getApplication())
 }
 
 @Singleton
 class LocationViewModelFactory
-    @Inject constructor(val app: Application, private val locationProvider: ForecastLocationService)
+    @Inject constructor(val app: Application, private val locationPRepo: SelectedLocationRepository)
     : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return if (modelClass==LocationViewModel::class.java)
-            LocationViewModel(app, locationProvider) as T
-        else throw IllegalArgumentException("Unrecogmized class")
+            LocationViewModel( locationPRepo) as T
+        else throw IllegalArgumentException("Unrecognized viewModel class")
 
     }
+
+    // Convenience function
+    fun getViewModel(frag: Fragment) =
+            ViewModelProviders.of(frag, this).get(LocationViewModel::class.java)!!
 }

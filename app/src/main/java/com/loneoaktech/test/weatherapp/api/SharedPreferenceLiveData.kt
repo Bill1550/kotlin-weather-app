@@ -8,11 +8,13 @@ import android.content.SharedPreferences
  *
  * Created by BillH on 9/17/2017.
  */
-class SharedPreferenceLiveData<T>(private val preferences: SharedPreferences, private val key: String,
+open class SharedPreferenceLiveData<T>(private val preferences: SharedPreferences, private val key: String,
                                   private val map: (p: SharedPreferences, k:String)->T?) : LiveData<T>() {
     init {
         if (preferences.contains(key))
-            value = map(preferences, key)
+            postValue(map(preferences, key))
+        else
+            postValue(null)
     }
 
     private val _listener : SharedPreferences.OnSharedPreferenceChangeListener =
@@ -28,4 +30,7 @@ class SharedPreferenceLiveData<T>(private val preferences: SharedPreferences, pr
     override fun onInactive() {
         preferences.unregisterOnSharedPreferenceChangeListener(_listener)
     }
+
+    // Ensure that postValue can't be overridden so that it is safely callable from constructor
+    final override fun postValue(t:T?) { super.postValue(t)}
 }

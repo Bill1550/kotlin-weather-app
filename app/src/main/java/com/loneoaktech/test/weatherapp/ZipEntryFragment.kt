@@ -28,12 +28,15 @@ class ZipEntryFragment : DialogFragment(), Injectable {
     @Inject
     lateinit var _locationViewModelFactory : LocationViewModelFactory
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_AppCompat_Dialog)
         dialog.window.setGravity(Gravity.CENTER_HORIZONTAL or Gravity.TOP)
         dialog.window.attributes = dialog.window.attributes.apply{
             y = resources.getDimensionPixelOffset(R.dimen.action_bar_height)
         }
+        dialog.setCanceledOnTouchOutside(false)
+
 
         return inflater.inflate(R.layout.fragment_zip_entry, container, false).also { rv ->
             rv.zipCodeText.setOnEditorActionListener(_zipActionListener)
@@ -50,6 +53,8 @@ class ZipEntryFragment : DialogFragment(), Injectable {
         _locationModel = ViewModelProviders.of(this, _locationViewModelFactory)
                 .get(LocationViewModel::class.java)?.apply {
             // Subscribe to the model
+            clearValidation()
+
             selectedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
                 zipCodeText.setText(it?.zipCode.toString())
@@ -64,10 +69,12 @@ class ZipEntryFragment : DialogFragment(), Injectable {
             validatedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation>{
                 // Pass validated location back to the model, makes sure selection only occurs
                 // if fragment is still active.
-                if (it != null) {
+                Timber.i("valid location changed: %s", it)
+                if (it != null ) {
                     selectLocation(it)
                     this@ZipEntryFragment.dismiss()
                 }
+
             })
         }
     }

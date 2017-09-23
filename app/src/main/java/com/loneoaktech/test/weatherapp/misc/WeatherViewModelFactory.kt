@@ -14,7 +14,7 @@ import javax.inject.Singleton
  */
 
 
-//---------- Not currently used dur to an internal compiler error in KAPT building the type map.
+//---------- Not currently used due to an internal compiler error in KAPT building the type map.
 // created separate ViewModel factories for each VM using constructor injection.
 
 @Singleton

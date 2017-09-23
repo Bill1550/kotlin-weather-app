@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         fab.visibility = View.GONE
 
         if (savedInstanceState == null){
-            val fragment = ForecastSummaryFragment() //ZipEntryFragment()
+            val fragment = ForecastSummaryFragment()
             supportFragmentManager.beginTransaction()
                     .add(R.id.fragment, fragment, TAG_FORECAST_SUMMARY)
                     .commit()

@@ -6,6 +6,7 @@ import com.johnhiott.darkskyandroidlib.ForecastApi
 import com.johnhiott.darkskyandroidlib.RequestBuilder
 import com.johnhiott.darkskyandroidlib.models.Request
 import com.johnhiott.darkskyandroidlib.models.WeatherResponse
+import com.loneoaktech.test.weatherapp.di.AppContext
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.DataPoint
 import com.loneoaktech.test.weatherapp.model.Forecast
@@ -13,6 +14,7 @@ import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
+import timber.log.Timber
 
 /**
  *  Executes the DarkSky API requests
@@ -21,7 +23,7 @@ import retrofit.client.Response
  */
 const val DARK_SKY_API_KEY = "c87d6c62bfb0c97670c2f79eb05c699f"
 
-class HiottDarkSkyService(appContext: Context) : WeatherApiService {
+class HiottDarkSkyService(@AppContext appContext: Context) : WeatherApiService {
     private val _appContext = appContext.applicationContext  // Ensure that it is an app context
 
     init{
@@ -35,6 +37,7 @@ class HiottDarkSkyService(appContext: Context) : WeatherApiService {
     private class ForecastLiveData(val location: ForecastLocation) : LiveData<AsyncResource<Forecast>>() {
 
         init {
+            Timber.i("initiating forecast load")
             loadData()
         }
 

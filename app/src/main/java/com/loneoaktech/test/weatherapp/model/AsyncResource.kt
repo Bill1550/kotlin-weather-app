@@ -7,11 +7,14 @@ package com.loneoaktech.test.weatherapp.model
 data class AsyncResource<out T>
     constructor(val status: Status, val data: T?, val msg: String?)
 {
+    @Suppress("UNUSED_PARAMETER")
     companion object {
         enum class Status { SUCCESS, LOADING, ERROR }
 
-        fun <T> success(data: T): AsyncResource<T> = AsyncResource(Status.SUCCESS, data, null)
-        fun <T> error(msg: String): AsyncResource<T> = AsyncResource(Status.ERROR, null, msg)
-        fun <T> loading(): AsyncResource<T> = AsyncResource(Status.LOADING, null, null)
+        fun <T> success(data: T?): AsyncResource<T> = AsyncResource(Status.SUCCESS, data, null)
+        fun <T> error(msg: String, data: T? = null): AsyncResource<T> = AsyncResource(Status.ERROR, null, msg)
+        fun <T> loading(data: T? = null): AsyncResource<T> = AsyncResource(Status.LOADING, null, null)
     }
+
+    fun isSuccess(): Boolean = status==Status.SUCCESS
 }

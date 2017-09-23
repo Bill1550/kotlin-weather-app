@@ -8,6 +8,10 @@ import com.loneoaktech.test.weatherapp.api.AndroidZipLocationService
 import com.loneoaktech.test.weatherapp.api.ForecastLocationService
 import com.loneoaktech.test.weatherapp.api.HiottDarkSkyService
 import com.loneoaktech.test.weatherapp.api.WeatherApiService
+import com.loneoaktech.test.weatherapp.db.ForecastDao
+import com.loneoaktech.test.weatherapp.db.SelectedLocationDao
+import com.loneoaktech.test.weatherapp.db.SharedPrefsSelectedLocationDao
+import com.loneoaktech.test.weatherapp.db.SharedPrfsForecastDao
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -32,6 +36,10 @@ class AppModule(val app:WeatherAppApplication){
     @Provides @Singleton fun provideForecastLocationService() : ForecastLocationService = AndroidZipLocationService(app)
 
     @Provides @Singleton fun provideWeatherApiService() : WeatherApiService = HiottDarkSkyService(app)
+
+    @Provides @Singleton fun provideSelectedLocationDao() : SelectedLocationDao = SharedPrefsSelectedLocationDao(app)
+
+    @Provides @Singleton fun provideForecastDao() : ForecastDao = SharedPrfsForecastDao(app)
 }
 
 @Module
