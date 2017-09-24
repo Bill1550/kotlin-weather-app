@@ -1,7 +1,9 @@
 package com.loneoaktech.test.weatherapp.di
 
 import android.app.Application
+import android.content.Context
 import com.loneoaktech.test.weatherapp.WeatherAppApplication
+import com.loneoaktech.test.weatherapp.updater.ForecastUpdateJobService
 import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
 import dagger.BindsInstance
 import dagger.Component
@@ -30,5 +32,8 @@ interface AppComponent {
     }
 
     fun inject(app: WeatherAppApplication)
-    fun inject(locationModel: LocationViewModel)
+    fun inject(jobSvc: ForecastUpdateJobService)
 }
+
+val Context.weatherApp : WeatherAppApplication
+    get() = this.applicationContext as WeatherAppApplication

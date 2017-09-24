@@ -13,7 +13,7 @@ data class AsyncResource<out T>
 
         fun <T> success(data: T?): AsyncResource<T> = AsyncResource(Status.SUCCESS, data, null)
         fun <T> error(msg: String, data: T? = null): AsyncResource<T> = AsyncResource(Status.ERROR, null, msg)
-        fun <T> loading(data: T? = null): AsyncResource<T> = AsyncResource(Status.LOADING, null, null)
+        fun <T> loading(data: T? = null): AsyncResource<T> = AsyncResource(Status.LOADING, data, null)
     }
 
     fun isSuccess(): Boolean = status==Status.SUCCESS

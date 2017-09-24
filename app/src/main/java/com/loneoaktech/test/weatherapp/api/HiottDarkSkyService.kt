@@ -58,6 +58,8 @@ class HiottDarkSkyService(@AppContext appContext: Context) : WeatherApiService {
                     weatherResponse?.let{ resp ->
                         value = AsyncResource.success(Forecast(location,System.currentTimeMillis(), copyDataPoint(resp.currently),
                                 listOf(), listOf()))
+
+                        Timber.i("Forecast fetched: %s", value)
                     }
                 }
 

@@ -1,12 +1,18 @@
 package com.loneoaktech.test.weatherapp
 
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.loneoaktech.test.weatherapp.di.Injectable
+import com.loneoaktech.test.weatherapp.misc.formatTimeAsHour
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
@@ -27,22 +33,24 @@ import javax.inject.Inject
 class ForecastSummaryFragment : Fragment(), Injectable {
     private var _weatherViewModel: WeatherViewModel? = null
 
-
     @Inject
     lateinit var _weatherRepo: WeatherRepository
 
     @Inject
     lateinit var _locationRepo: SelectedLocationRepository
 
-//    @Inject
-//    lateinit var _locationViewModelFactory : LocationViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_forecast_summary, container, false).also{ rv ->
             rv.selectLocation.setOnClickListener({
-                Timber.w("Click!")
-                (activity as? MainActivity)?.showLocationEntryFragment()
+                (activity as? MainActivity)?.showLocationEntryDialog()
+            })
+            rv.darkSkyAttributionText.setOnClickListener({
+                startActivity( Intent(Intent.ACTION_VIEW).apply{data= Uri.parse(getString(R.string.dark_sky_url))})
+            })
+            rv.refreshIcon.setOnClickListener({
+                _weatherViewModel?.refresh()
             })
 
         }
@@ -61,19 +69,39 @@ class ForecastSummaryFragment : Fragment(), Injectable {
         Timber.i("display forecast result: %s", forecastResource)
         when( forecastResource.status ){
             AsyncResource.Companion.Status.ERROR -> { } // display error
-            AsyncResource.Companion.Status.LOADING -> {} // display spinner
+            AsyncResource.Companion.Status.LOADING -> {
+                // display spinner
+                loadingShade.visibility= if(forecastResource.data==null) VISIBLE else INVISIBLE
+                loadForecastViews(forecastResource.data)
+            }
             AsyncResource.Companion.Status.SUCCESS -> {
-                // display results
-                forecastResource.data?.let{ (location, _, currently) ->
-                    locationNameText.text = location.title
-                    currently?.let{ (_, summary, icon, temperature) ->
-                        currentSummary.text = summary
-                        currentTemperatureText.text = String.format("%.0f° F", temperature)
-                        weatherIcon.setImageResource(getWeatherIcon(icon))
-                    }
-                }
+                loadingShade.visibility = View.INVISIBLE
+                loadForecastViews(forecastResource.data)
             }
         }
-
     }
+
+    @Suppress("Destructure") // destructuring "f" below seems to work against clarity
+    private fun loadForecastViews(forecast : Forecast?) {
+        // display results
+        forecast?.let { f ->
+            locationNameText.text = f.location.title
+            forecastTime.text = getString(R.string.forecast_as_of_time, context.formatTimeAsHour(f.time))
+            f.currently?.let { dp ->
+                currentSummary.text = dp.summary
+                currentTemperatureText.text = String.format("%.0f° F", dp.temperature)
+                weatherIcon.setImageResource(getWeatherIcon(dp.icon))
+            }
+
+
+        }
+    }
+
+//    private fun startRefreshTimer() {
+//        view?.removeCallbacks(refreshRunnable)
+//        if (lifecycle.currentState == Lifecycle.State.RESUMED)
+//            view?.postDelayed(refreshRunnable, ACTIVE_DISPLAY_UPDATE_PERIOD_MS)
+//    }
+//
+//    private val refreshRunnable = Runnable { _weatherViewModel?.refresh(); startRefreshTimer()}
 }

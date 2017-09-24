@@ -6,4 +6,8 @@
     <string name="description_menu">Menu</string>
     <string name="title_enter_zip_code">Enter Zip Code:</string>
     <string name="button_label_cancel">Cancel</string>
+    <string name="message_powered_by_dark_sky">Powered by Dark Sky</string>
+    <string name="dark_sky_url">https://darksky.net/poweredby</string>
+    <string name="description_weather_icon">Weather icon</string>
+    <string name="forecast_as_of_time">As of %1$s</string>
 </resources>

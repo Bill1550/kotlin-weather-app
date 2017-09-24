@@ -9,7 +9,7 @@
     >
 
     <ImageView
-        android:id="@+id/menuIcon"
+        android:id="@+id/refreshIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +18,7 @@
         app:layout_constraintBottom_toBottomOf="@id/locationNameText"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         android:layout_marginStart="@dimen/summary_horizontal_margin"
-        android:src="@drawable/ic_menu_black_24dp"
-        android:visibility="invisible"
+        android:src="@drawable/ic_refresh_black_24dp"
         android:contentDescription="@string/description_menu"/>
 
     <TextView
@@ -27,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Newtown, CT 6470"
-        app:layout_constraintStart_toEndOf="@+id/menuIcon"
+        app:layout_constraintStart_toEndOf="@+id/refreshIcon"
         app:layout_constraintEnd_toStartOf="@+id/selectLocation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/topPanelBottomGuide"
@@ -36,8 +35,8 @@
 
     <ImageView
         android:id="@+id/selectLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/touch_target_size"
+        android:layout_height="@dimen/touch_target_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/locationNameText"
         app:layout_constraintTop_toTopOf="@+id/locationNameText"
@@ -55,6 +54,29 @@
         app:layout_constraintGuide_percent=".10"
         />
 
+    <LinearLayout
+        android:id="@+id/loadingShade"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@color/loadingShade"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topPanelBottomGuide"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_vertical"
+        tools:visibility="invisible"
+        >
+
+        <ProgressBar
+            android:id="@+id/loadingProgress"
+            android:layout_width="@dimen/loading_progress_size"
+            android:layout_height="@dimen/loading_progress_size"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_gravity="center"
+            />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/weatherIcon"
         android:layout_width="48dp"
@@ -65,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/currentSummary"
 
-        />
+        android:contentDescription="@string/description_weather_icon"/>
 
 
     <TextView
@@ -98,5 +120,31 @@
         />
 
 
+    <TextView
+        android:id="@+id/forecastTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+        app:layout_constraintEnd_toEndOf="@id/currentTemperatureText"
+        tools:text="As of 12:34 pm"
+        />
+
+
+
+
+    <TextView
+        android:id="@+id/darkSkyAttributionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/summary_bottom_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:text="@string/message_powered_by_dark_sky"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/AttributionText"
+        />
 
 </android.support.constraint.ConstraintLayout>

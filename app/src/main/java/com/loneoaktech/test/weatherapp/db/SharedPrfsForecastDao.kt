@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.loneoaktech.test.weatherapp.api.SharedPreferenceLiveData
+import com.loneoaktech.test.weatherapp.misc.mustBeOrNull
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import timber.log.Timber
@@ -16,8 +17,6 @@ import timber.log.Timber
  */
 private const val FORECAST_SHARED_PREFS = "forecast_shared_prefs"
 private const val KEY_CURRENT_FORECAST = "current_forecast"
-
-
 
 
 class SharedPrfsForecastDao(applicationContext: Context) : ForecastDao {
@@ -40,6 +39,7 @@ class SharedPrfsForecastDao(applicationContext: Context) : ForecastDao {
     private class ForecastSharedPrefsLiveData(var requestedLocation: ForecastLocation, prefs: SharedPreferences, key: String) :
         SharedPreferenceLiveData<Forecast>(prefs, key, {p, k ->
             Timber.i("Attempting to load for %s", requestedLocation)
+            // return the rehydrated forecast or null if it doesn't match the requested location
             run {
                 try {
                     Gson().fromJson(p.getString(k, null), Forecast::class.java)
@@ -48,9 +48,8 @@ class SharedPrfsForecastDao(applicationContext: Context) : ForecastDao {
                     null
                 }
             }
-            ?.mustBe {location==requestedLocation}
+            ?.mustBeOrNull {location==requestedLocation}
         })
 
 }
 
-fun<T> T.mustBe(predicate: T.()->Boolean ) : T? = if (predicate(this)) this else null
