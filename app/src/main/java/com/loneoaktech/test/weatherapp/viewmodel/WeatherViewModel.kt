@@ -1,6 +1,9 @@
 package com.loneoaktech.test.weatherapp.viewmodel
 
 import android.arch.lifecycle.*
+import android.os.Handler
+import android.os.Looper
+import com.loneoaktech.test.weatherapp.ACTIVE_DISPLAY_UPDATE_PERIOD_MS
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
@@ -22,10 +25,15 @@ class WeatherViewModel constructor(locationRepo: SelectedLocationRepository, pri
         addSource(_selectedLocationLD){newLocation -> this.value = FlaggedLocation(newLocation, false)}
     }
 
+    private val _refreshHandler = Handler(Looper.getMainLooper())
     private var _refreshPending = false
 
     val forecast : LiveData<AsyncResource<Forecast>> = Transformations.switchMap(_locationMirror){
-        fl -> if (fl?.loc!=null) _weatherRepo.getForecast(fl.loc, fl.forceUpdate) else MutableLiveData<AsyncResource<Forecast>>().apply{value= AsyncResource.loading()}
+        fl -> if (fl?.loc!=null){
+            startAutoRefresh()
+            _weatherRepo.getForecast(fl.loc, fl.forceUpdate)
+        } else
+            MutableLiveData<AsyncResource<Forecast>>().apply{value= AsyncResource.loading()}
     }
 
     fun refresh() {
@@ -38,6 +46,16 @@ class WeatherViewModel constructor(locationRepo: SelectedLocationRepository, pri
         }
     }
 
+    private fun startAutoRefresh(){
+        _refreshHandler.removeCallbacks(null)
+        _refreshHandler.postDelayed({refresh()}, ACTIVE_DISPLAY_UPDATE_PERIOD_MS)
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        _refreshHandler.removeCallbacks(null)   // clear everything
+    }
 }
 
 class WeatherViewModelFactory

@@ -32,4 +32,9 @@
         <item name="android:textSize">@dimen/attribution_text_size</item>
     </style>
 
+    <style name="ForecastDetailText" parent="AppText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/list_item_text_size</item>
+    </style>
+
 </resources>

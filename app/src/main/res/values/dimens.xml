@@ -11,4 +11,7 @@
     <dimen name="dialog_vertical_margin">20dp</dimen>
     <dimen name="action_bar_height">64dp</dimen>
     <dimen name="loading_progress_size">64dp</dimen>
+    <dimen name="list_item_text_size">16sp</dimen>
+    <dimen name="list_item_vertical_margin">4dp</dimen>
+    <dimen name="list_item_horizontal_margin">4dp</dimen>
 </resources>

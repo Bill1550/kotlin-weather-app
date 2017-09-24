@@ -10,4 +10,6 @@
     <string name="dark_sky_url">https://darksky.net/poweredby</string>
     <string name="description_weather_icon">Weather icon</string>
     <string name="forecast_as_of_time">As of %1$s</string>
+    <string name="min_max_temp_separator">--</string>
+    <string name="label_days">Days</string>
 </resources>
