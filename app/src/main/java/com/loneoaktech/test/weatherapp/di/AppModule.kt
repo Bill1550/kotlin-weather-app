@@ -32,7 +32,7 @@ class AppModule(val app:WeatherAppApplication){
 
     @Provides @Singleton fun provideForecastLocationService() : ForecastLocationService = AndroidZipLocationService(app)
 
-    @Provides @Singleton fun provideWeatherApiService() : WeatherApiService = HiottDarkSkyService(app)
+    @Provides @Singleton fun provideWeatherApiService() : WeatherApiService = HiottDarkSkyService()
 
     @Provides @Singleton fun provideSelectedLocationDao() : SelectedLocationDao = SharedPrefsSelectedLocationDao(app)
 
@@ -43,7 +43,7 @@ class AppModule(val app:WeatherAppApplication){
 abstract class ActivitiesModule {
 
     @Suppress("unused")
-    @ContributesAndroidInjector(modules = arrayOf(FragmentBuilderModule::class))
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class] )
     abstract fun contributeMainActivity(): MainActivity
 }
 

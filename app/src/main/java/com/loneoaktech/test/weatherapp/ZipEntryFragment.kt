@@ -57,7 +57,7 @@ class ZipEntryFragment : DialogFragment(), Injectable {
 
             selectedLocation.observe(this@ZipEntryFragment, Observer<ForecastLocation> {
                 locationNameText.text = it?.title ?: "-----"
-                zipCodeText.setText(it?.zipCode.toString())
+//                zipCodeText.setText(it?.zipCode.toString())
             })
 
             errorMessage.observe(this@ZipEntryFragment, Observer<String> {

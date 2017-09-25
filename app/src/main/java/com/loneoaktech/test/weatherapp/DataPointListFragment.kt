@@ -44,9 +44,9 @@ class DataPointListFragment : Fragment(), Injectable {
     @Inject
     lateinit var _locationRepo: SelectedLocationRepository
 
-    lateinit var _periodListAdapter: DataPointRecyclerViewAdapter
+    private lateinit var _periodListAdapter: DataPointRecyclerViewAdapter
 
-    lateinit var _period : Period
+    private lateinit var _period : Period
 
     companion object {
         private val ARG_PERIOD = "period"
@@ -60,6 +60,7 @@ class DataPointListFragment : Fragment(), Injectable {
     }
 
 
+    @Suppress("Destructure") // Destructuring the DataPoint class calls isn't too clean
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _period = Period.valueOf(arguments.getString(ARG_PERIOD, Period.DAYS.name))
@@ -95,6 +96,8 @@ class DataPointListFragment : Fragment(), Injectable {
             }
 
             rv.backIcon.setOnClickListener{ activity.onBackPressed()}
+
+            rv.loadingShade.visibility = View.INVISIBLE // don't need shade
         }
     }
 
@@ -113,7 +116,7 @@ class DataPointListFragment : Fragment(), Injectable {
             AsyncResource.Companion.Status.ERROR -> { } // display error
             AsyncResource.Companion.Status.LOADING -> {
                 // display spinner
-                loadingShade.visibility= if(forecastResource.data==null) View.VISIBLE else View.INVISIBLE
+//                loadingShade.visibility= if(forecastResource.data==null) View.VISIBLE else View.INVISIBLE
                 loadForecastViews(forecastResource.data)
             }
             AsyncResource.Companion.Status.SUCCESS -> {

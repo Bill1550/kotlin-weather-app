@@ -78,7 +78,7 @@ abstract class NetworkBoundResource<T>{
     @MainThread
     private fun saveResultAndReInit(apiResponse : AsyncResource<T> ) {
         if (apiResponse.data != null) {
-            AsyncLoader<T>(this, apiResponse.data).execute()
+            AsyncLoader(this, apiResponse.data).execute()
         }
     }
 

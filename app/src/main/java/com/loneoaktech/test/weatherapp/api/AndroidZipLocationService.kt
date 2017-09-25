@@ -2,10 +2,10 @@ package com.loneoaktech.test.weatherapp.api
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.location.Geocoder
 import android.os.AsyncTask
+import com.loneoaktech.test.weatherapp.di.ActivitiesModule_ContributeMainActivity
 import com.loneoaktech.test.weatherapp.di.AppContext
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
@@ -24,7 +24,6 @@ import java.lang.ref.WeakReference
  */
 class AndroidZipLocationService(@AppContext appContext : Context) : ForecastLocationService {
     private val _appContext = appContext.applicationContext // ensure that it is an app context.
-    private val _cache = HashMap<ZipCode,ForecastLocation>()
 
 
     companion object {
@@ -76,7 +75,6 @@ class AndroidZipLocationService(@AppContext appContext : Context) : ForecastLoca
             }
 
             override fun onPostExecute(result: AsyncResource<ForecastLocation>) {
-                Timber.i("onPostExecute: %s", result)
                 value = result
             }
         }

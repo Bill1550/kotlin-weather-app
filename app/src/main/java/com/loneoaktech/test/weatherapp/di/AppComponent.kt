@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.loneoaktech.test.weatherapp.WeatherAppApplication
 import com.loneoaktech.test.weatherapp.updater.ForecastUpdateJobService
-import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -17,12 +16,10 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = arrayOf(
-        AndroidSupportInjectionModule::class,
-        AppModule::class,
-//        ApiModule::class,
-        ActivitiesModule::class
-))
+@Component(modules = [ AndroidSupportInjectionModule::class,
+                       AppModule::class,
+                       ActivitiesModule::class
+                     ])
 interface AppComponent {
     @Component.Builder
     interface Builder {

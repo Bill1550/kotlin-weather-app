@@ -19,7 +19,7 @@ import dagger.android.support.HasSupportFragmentInjector
 /**
  * Marker interface to indicate which fragments need injecting
  */
-interface Injectable {}
+interface Injectable
 
 object AppInjector{
 

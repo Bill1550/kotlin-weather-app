@@ -2,7 +2,6 @@ package com.loneoaktech.test.weatherapp.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.*
-import android.support.v4.app.Fragment
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
@@ -16,7 +15,6 @@ import javax.inject.Singleton
  *
  * Created by BillH on 9/17/2017.
  */
-const val KEY_SELECTED_LOCATION = "selected_location" // shared prefs key
 
 // (Injection is handled by factory below, since the ViewModelProvider maintains the VM instances
 class LocationViewModel
@@ -80,13 +78,9 @@ class LocationViewModelFactory
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return if (modelClass==LocationViewModel::class.java)
-            LocationViewModel( locationPRepo) as T
+        return if (modelClass == LocationViewModel::class.java)
+            LocationViewModel(locationPRepo) as T
         else throw IllegalArgumentException("Unrecognized viewModel class")
 
     }
-
-    // Convenience function
-    fun getViewModel(frag: Fragment) =
-            ViewModelProviders.of(frag, this).get(LocationViewModel::class.java)!!
 }

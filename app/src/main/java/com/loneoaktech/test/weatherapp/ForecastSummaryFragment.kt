@@ -15,6 +15,7 @@ import com.loneoaktech.test.weatherapp.di.Injectable
 import com.loneoaktech.test.weatherapp.misc.formatTimeAsHour
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
+import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
 import com.loneoaktech.test.weatherapp.repository.WeatherRepository
 import com.loneoaktech.test.weatherapp.ui.DataPointRecyclerViewAdapter
@@ -46,6 +47,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
 
     lateinit var _hourlyAdapter: DataPointRecyclerViewAdapter
     lateinit var _dailyAdapter: DataPointRecyclerViewAdapter
+    var _displayedLocation: ForecastLocation? = null
 
     companion object {
         private val hourFormat = SimpleDateFormat("hh:mm aa", Locale.US)
@@ -111,7 +113,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
             AsyncResource.Companion.Status.ERROR -> { } // display error
             AsyncResource.Companion.Status.LOADING -> {
                 // display spinner
-                loadingShade.visibility= if(forecastResource.data==null) VISIBLE else INVISIBLE
+                loadingShade.visibility= if(forecastResource.data?.location!=_weatherViewModel?.selectedLocation?.value) VISIBLE else INVISIBLE
                 loadForecastViews(forecastResource.data)
             }
             AsyncResource.Companion.Status.SUCCESS -> {
@@ -125,6 +127,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
     private fun loadForecastViews(forecast : Forecast?) {
         // display results
         forecast?.let { f ->
+            _displayedLocation = f.location
             locationNameText.text = f.location.title
             forecastTime.text = getString(R.string.forecast_as_of_time, context.formatTimeAsHour(f.time))
             f.currently?.let { dp ->

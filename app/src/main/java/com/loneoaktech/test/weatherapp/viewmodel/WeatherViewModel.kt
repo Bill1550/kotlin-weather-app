@@ -20,9 +20,9 @@ class WeatherViewModel constructor(locationRepo: SelectedLocationRepository, pri
     // class used to tag requests that should force an immediate update.
     private class FlaggedLocation(val loc: ForecastLocation?, val forceUpdate: Boolean)
 
-    private val _selectedLocationLD = locationRepo.getSelectedLocation()
+    val selectedLocation = locationRepo.getSelectedLocation()
     private val _locationMirror = MediatorLiveData<FlaggedLocation>().apply{
-        addSource(_selectedLocationLD){newLocation -> this.value = FlaggedLocation(newLocation, false)}
+        addSource(selectedLocation){ newLocation -> this.value = FlaggedLocation(newLocation, false)}
     }
 
     private val _refreshHandler = Handler(Looper.getMainLooper())
@@ -39,8 +39,8 @@ class WeatherViewModel constructor(locationRepo: SelectedLocationRepository, pri
     fun refresh() {
         // add and remove source, it should then update immediately
         _refreshPending=true
-        _locationMirror.removeSource(_selectedLocationLD)
-        _locationMirror.addSource(_selectedLocationLD){newLocation ->
+        _locationMirror.removeSource(selectedLocation)
+        _locationMirror.addSource(selectedLocation){ newLocation ->
             _locationMirror.value = FlaggedLocation(newLocation, _refreshPending)
             _refreshPending=false   // clear, so an update is not forced on another request, such as after a config change
         }

@@ -1,12 +1,10 @@
 package com.loneoaktech.test.weatherapp.api
 
 import android.arch.lifecycle.LiveData
-import android.content.Context
 import com.johnhiott.darkskyandroidlib.ForecastApi
 import com.johnhiott.darkskyandroidlib.RequestBuilder
 import com.johnhiott.darkskyandroidlib.models.Request
 import com.johnhiott.darkskyandroidlib.models.WeatherResponse
-import com.loneoaktech.test.weatherapp.di.AppContext
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.DataPoint
 import com.loneoaktech.test.weatherapp.model.Forecast
@@ -23,8 +21,7 @@ import timber.log.Timber
  */
 const val DARK_SKY_API_KEY = "c87d6c62bfb0c97670c2f79eb05c699f"
 
-class HiottDarkSkyService(@AppContext appContext: Context) : WeatherApiService {
-    private val _appContext = appContext.applicationContext  // Ensure that it is an app context
+class HiottDarkSkyService() : WeatherApiService {
 
     init{
         ForecastApi.create(DARK_SKY_API_KEY)
