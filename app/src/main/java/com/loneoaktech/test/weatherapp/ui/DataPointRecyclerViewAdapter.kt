@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.loneoaktech.test.weatherapp.model.DataPoint
+import timber.log.Timber
 
 /**
  * Recycler view for display weather DataPoints.  Mapping is via a lamda using the Kotlin android plugin mapping
@@ -14,16 +15,15 @@ import com.loneoaktech.test.weatherapp.model.DataPoint
 class DataPointRecyclerViewAdapter(
         private val context: Context,
         private val layoutResource: Int,
-        private val bind: (v: View) -> Unit)
+        private val bind: (v: View, db: DataPoint) -> Unit)
     : RecyclerView.Adapter<DataPointRecyclerViewAdapter.ViewHolder> (){
 
     private val _data : MutableList<DataPoint> = mutableListOf()
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var datapoint: DataPoint?=null
-    }
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    public fun setData(newData: List<DataPoint>){
+    fun setData(newData: List<DataPoint>){
+        Timber.i("setData, size=%d", newData.size)
         _data.clear()
         _data.addAll(newData)
         notifyDataSetChanged()
@@ -37,8 +37,8 @@ class DataPointRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.apply{
-            datapoint = _data[position]
-            bind(this.itemView)
+            bind(this.itemView, _data[position])
+
         }
     }
 

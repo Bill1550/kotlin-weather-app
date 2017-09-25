@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.loneoaktech.test.weatherapp.ZipEntryFragment"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp"
     >
 
     <ImageView
@@ -17,9 +19,12 @@
         app:layout_constraintTop_toTopOf="@+id/locationNameText"
         app:layout_constraintBottom_toBottomOf="@id/locationNameText"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintVertical_chainStyle="packed"
         android:layout_marginStart="@dimen/summary_horizontal_margin"
         android:src="@drawable/ic_refresh_black_24dp"
-        android:contentDescription="@string/description_menu"/>
+        android:contentDescription="@string/description_menu"
+        android:visibility="invisible"
+        />
 
     <TextView
         android:id="@+id/locationNameText"
@@ -64,6 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topPanelBottomGuide"
         app:layout_constraintBottom_toBottomOf="parent"
+
         android:gravity="center_vertical"
         tools:visibility="invisible"
         >
@@ -84,6 +90,9 @@
         android:layout_marginStart="@dimen/summary_horizontal_margin"
         android:src="@drawable/ic_rain"
         app:layout_constraintTop_toBottomOf="@id/topPanelBottomGuide"
+        app:layout_constraintBottom_toTopOf="@+id/forecastTime"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/currentSummary"
 
@@ -125,8 +134,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+        app:layout_constraintBottom_toTopOf="@+id/hoursLabel"
         app:layout_constraintEnd_toEndOf="@id/currentTemperatureText"
         tools:text="As of 12:34 pm"
+        />
+
+    <TextView
+        android:id="@+id/hoursLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecastTime"
+        app:layout_constraintBottom_toTopOf="@id/hourlyRecyclerView"
+        android:text="@string/label_hours"
+        style="@style/SubHeadingText"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/hourlyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hoursLabel"
+        app:layout_constraintBottom_toTopOf="@id/daysLabel"
+        android:clickable="true"
+        android:focusable="true"
         />
 
     <TextView
@@ -134,20 +167,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forecastTime"
+        app:layout_constraintTop_toBottomOf="@+id/hourlyRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/dailyRecyclerView"
+        android:layout_marginTop="12dp"
         android:text="@string/label_days"
-        />
+        style="@style/SubHeadingText"
+    />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/dailyRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/daysLabel"
         app:layout_constraintBottom_toTopOf="@id/darkSkyAttributionText"
+        android:clickable="true"
+        android:focusable="true"
         />
-
-
 
     <TextView
         android:id="@+id/darkSkyAttributionText"
@@ -157,7 +194,6 @@
         android:layout_marginBottom="@dimen/summary_bottom_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         android:text="@string/message_powered_by_dark_sky"
         android:clickable="true"
         android:focusable="true"

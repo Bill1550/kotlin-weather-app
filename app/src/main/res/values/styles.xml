@@ -37,4 +37,9 @@
         <item name="android:textSize">@dimen/list_item_text_size</item>
     </style>
 
+    <style name="SubHeadingText" parent="AppText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/sub_heading_text_size</item>
+    </style>
+
 </resources>

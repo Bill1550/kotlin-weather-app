@@ -57,7 +57,8 @@ class HiottDarkSkyService(@AppContext appContext: Context) : WeatherApiService {
                 override fun success(weatherResponse: WeatherResponse?, response: Response?) {
                     weatherResponse?.let{ resp ->
                         value = AsyncResource.success(Forecast(location,System.currentTimeMillis(), copyDataPoint(resp.currently),
-                                listOf(), listOf()))
+                                    resp.hourly.data.mapNotNull{ sdp -> copyDataPoint(sdp)},
+                                    resp.daily.data.mapNotNull{ sdp -> copyDataPoint(sdp)}))
 
                         Timber.i("Forecast fetched: %s", value)
                     }
@@ -67,12 +68,11 @@ class HiottDarkSkyService(@AppContext appContext: Context) : WeatherApiService {
                     value = AsyncResource.error(error?.message ?: "unspecified")
                 }
             })
-
         }
 
         private fun copyDataPoint(source: com.johnhiott.darkskyandroidlib.models.DataPoint?): DataPoint? {
             return source?.let { s ->
-                DataPoint(s.time, s.summary, s.icon, s.temperature, s.temperatureMin, s.temperatureMax)
+                DataPoint(s.time*1000, s.summary, s.icon, s.temperature, s.temperatureMin, s.temperatureMax)
             }
         }
     }

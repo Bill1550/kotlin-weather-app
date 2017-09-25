@@ -1,11 +1,11 @@
 package com.loneoaktech.test.weatherapp
 
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -17,12 +17,17 @@ import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
 import com.loneoaktech.test.weatherapp.repository.WeatherRepository
+import com.loneoaktech.test.weatherapp.ui.DataPointRecyclerViewAdapter
 import com.loneoaktech.test.weatherapp.ui.getWeatherIcon
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModel
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModelFactory
 import kotlinx.android.synthetic.main.fragment_forecast_summary.*
 import kotlinx.android.synthetic.main.fragment_forecast_summary.view.*
+import kotlinx.android.synthetic.main.list_item_daily_forcast.view.*
+import kotlinx.android.synthetic.main.list_item_hourly_forecast.view.*
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -39,6 +44,11 @@ class ForecastSummaryFragment : Fragment(), Injectable {
     @Inject
     lateinit var _locationRepo: SelectedLocationRepository
 
+    lateinit var _hourlyAdapter : DataPointRecyclerViewAdapter
+    lateinit var _dailyAdapter : DataPointRecyclerViewAdapter
+
+    private val hourFormat = SimpleDateFormat("hh:mm aa", Locale.US)
+    private val dayFormat = SimpleDateFormat("EEEEEE", Locale.US)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -53,6 +63,34 @@ class ForecastSummaryFragment : Fragment(), Injectable {
                 _weatherViewModel?.refresh()
             })
 
+            // configure hours list
+            _hourlyAdapter = DataPointRecyclerViewAdapter(context, R.layout.list_item_hourly_forecast){ iv, dp ->
+                iv.hourNameText.text = hourFormat.format(Date(dp.time))
+                iv.hourSummaryText.text = dp.summary
+                iv.temperatureText.text = getString(R.string.temperature_format, dp.temperature)
+                iv.setOnClickListener{Timber.i("item click")}
+            }
+
+            with(rv.hourlyRecyclerView){
+                layoutManager = LinearLayoutManager(context)
+                adapter = _hourlyAdapter
+                setHasFixedSize(true)
+            }
+
+            // configure days list
+            _dailyAdapter = DataPointRecyclerViewAdapter(context, R.layout.list_item_daily_forcast){ iv, dp ->
+                iv.dayNameText.text = dayFormat.format(Date(dp.time))
+                iv.daySummaryText.text = dp.summary
+                iv.maxTemperatureText.text = getString(R.string.temperature_format, dp.temperatureMax)
+                iv.minTemperatureText.text = getString(R.string.temperature_format, dp.temperatureMin)
+                iv.setOnClickListener{Timber.i("item click")}
+            }
+
+            with(rv.dailyRecyclerView){
+                layoutManager = LinearLayoutManager(context)
+                adapter = _dailyAdapter
+                setHasFixedSize(true)
+            }
         }
     }
 
@@ -89,19 +127,11 @@ class ForecastSummaryFragment : Fragment(), Injectable {
             forecastTime.text = getString(R.string.forecast_as_of_time, context.formatTimeAsHour(f.time))
             f.currently?.let { dp ->
                 currentSummary.text = dp.summary
-                currentTemperatureText.text = String.format("%.0f° F", dp.temperature)
+                currentTemperatureText.text = getString(R.string.temperature_format, dp.temperature)
                 weatherIcon.setImageResource(getWeatherIcon(dp.icon))
             }
-
-
+            _hourlyAdapter.setData(f.hourly.take(HOME_SCREEN_HOURS_TO_DISPLAY) )
+            _dailyAdapter.setData(f.daily.take(HOME_SCREEN_DAYS_TO_DISPLAY))
         }
     }
-
-//    private fun startRefreshTimer() {
-//        view?.removeCallbacks(refreshRunnable)
-//        if (lifecycle.currentState == Lifecycle.State.RESUMED)
-//            view?.postDelayed(refreshRunnable, ACTIVE_DISPLAY_UPDATE_PERIOD_MS)
-//    }
-//
-//    private val refreshRunnable = Runnable { _weatherViewModel?.refresh(); startRefreshTimer()}
 }

@@ -10,6 +10,8 @@
     android:layout_marginBottom="@dimen/list_item_vertical_margin"
     android:layout_marginStart="@dimen/list_item_horizontal_margin"
     android:layout_marginEnd="@dimen/list_item_horizontal_margin"
+    android:clickable="true"
+    android:focusable="true"
     >
 
     <TextView
@@ -20,14 +22,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/summaryText"
+        app:layout_constraintEnd_toStartOf="@id/hourSummaryText"
         android:gravity="center_horizontal"
         tools:text="12:00 am"
         style="@style/ForecastDetailText"
         />
 
     <TextView
-        android:id="@+id/summaryText"
+        android:id="@+id/hourSummaryText"
         android:layout_width="0dp"
         app:layout_constraintHorizontal_weight="10"
         android:layout_height="wrap_content"
@@ -42,10 +44,10 @@
     <TextView
         android:id="@+id/temperatureText"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="2"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/hourNameText"
-        app:layout_constraintStart_toEndOf="@id/summaryText"
+        app:layout_constraintStart_toEndOf="@id/hourSummaryText"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_horizontal"
         tools:text="70°"

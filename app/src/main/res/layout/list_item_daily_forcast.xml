@@ -10,6 +10,8 @@
     android:layout_marginBottom="@dimen/list_item_vertical_margin"
     android:layout_marginStart="@dimen/list_item_horizontal_margin"
     android:layout_marginEnd="@dimen/list_item_horizontal_margin"
+    android:clickable="true"
+    android:focusable="true"
     >
 
     <TextView
@@ -20,16 +22,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/summaryText"
+        app:layout_constraintEnd_toStartOf="@id/daySummaryText"
         android:gravity="center_horizontal"
         tools:text="Monday"
         style="@style/ForecastDetailText"
         />
 
     <TextView
-        android:id="@+id/summaryText"
+        android:id="@+id/daySummaryText"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="10"
+        app:layout_constraintHorizontal_weight="9"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/dayNameText"
         app:layout_constraintStart_toEndOf="@id/dayNameText"
@@ -42,10 +44,10 @@
     <TextView
         android:id="@+id/minTemperatureText"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="2"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/dayNameText"
-        app:layout_constraintStart_toEndOf="@id/summaryText"
+        app:layout_constraintStart_toEndOf="@id/daySummaryText"
         app:layout_constraintEnd_toStartOf="@id/tempSpacer"
         android:gravity="center_horizontal"
         tools:text="70°"
@@ -68,7 +70,7 @@
         android:id="@+id/maxTemperatureText"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBaseline_toBaselineOf="@+id/tempSpacer"
         app:layout_constraintStart_toEndOf="@id/tempSpacer"
         app:layout_constraintEnd_toEndOf="parent"

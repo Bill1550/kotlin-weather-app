@@ -4,6 +4,7 @@
     <dimen name="summary_top_margin">12dp</dimen>
     <dimen name="summary_bottom_margin">6dp</dimen>
     <dimen name="summary_horizontal_margin">18dp</dimen>
+    <dimen name="sub_heading_text_size">16sp</dimen>
     <dimen name="location_name_text_size">18sp</dimen>
     <dimen name="current_weather_text_size">22sp</dimen>
     <dimen name="attribution_text_size">14sp</dimen>
@@ -13,5 +14,5 @@
     <dimen name="loading_progress_size">64dp</dimen>
     <dimen name="list_item_text_size">16sp</dimen>
     <dimen name="list_item_vertical_margin">4dp</dimen>
-    <dimen name="list_item_horizontal_margin">4dp</dimen>
+    <dimen name="list_item_horizontal_margin">8dp</dimen>
 </resources>

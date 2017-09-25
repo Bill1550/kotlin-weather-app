@@ -12,4 +12,6 @@
     <string name="forecast_as_of_time">As of %1$s</string>
     <string name="min_max_temp_separator">--</string>
     <string name="label_days">Days</string>
+    <string name="label_hours">Hours</string>
+    <string name="temperature_format">%.0f° F</string>
 </resources>
