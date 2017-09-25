@@ -15,4 +15,5 @@
     <dimen name="list_item_text_size">16sp</dimen>
     <dimen name="list_item_vertical_margin">4dp</dimen>
     <dimen name="list_item_horizontal_margin">8dp</dimen>
+    <integer name="fade_time">500</integer>
 </resources>

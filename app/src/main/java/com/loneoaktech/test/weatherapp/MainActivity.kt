@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     fun showPeriodList(period: DataPointListFragment.Period ){
         supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.animator.fade_in,R.animator.fade_out,R.animator.fade_in,R.animator.fade_out)
                 .addToBackStack("HOME")
                 .replace(R.id.fragment, DataPointListFragment.createFragment(period), TAG_FORECAST_DETAIL)
                 .commit()
