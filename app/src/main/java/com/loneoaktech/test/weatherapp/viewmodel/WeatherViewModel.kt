@@ -9,6 +9,7 @@ import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
 import com.loneoaktech.test.weatherapp.repository.WeatherRepository
+import timber.log.Timber
 
 /**
  * ViewModel for displaying a specific location's forecast

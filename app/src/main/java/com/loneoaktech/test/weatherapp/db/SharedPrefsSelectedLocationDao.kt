@@ -37,13 +37,11 @@ class SharedPrefsSelectedLocationDao(applicationContext: Context) : SelectedLoca
     private class LocationSharedPrefsLiveData(prefs: SharedPreferences, key: String) :
             SharedPreferenceLiveData<ForecastLocation>(prefs, key, {p, k ->
                 // read prefs and convert to target value
-                run {
-                    try {
-                        Gson().fromJson(p.getString(k, null), ForecastLocation::class.java)
-                    } catch (ex: Exception){
-                        Timber.e("Exception when decoding location json: %s", ex.message)
-                        null
-                    }
+                try {
+                    Gson().fromJson(p.getString(k, null), ForecastLocation::class.java)
+                } catch (ex: Exception){
+                    Timber.e("Exception when decoding location json: %s", ex.message)
+                    null
                 }
             })
 }

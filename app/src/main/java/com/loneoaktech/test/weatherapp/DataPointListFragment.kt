@@ -131,6 +131,8 @@ class DataPointListFragment : Fragment(), Injectable {
         forecast?.let { f ->
             locationNameText.text = f.location.title
 
+            Timber.w("forecast, num days=%d, num hours=%d", forecast.daily.size,forecast.hourly.size)
+
             _periodListAdapter.setData(when(_period){
                 Period.HOURS ->{forecast.hourly.take(DETAIL_SCREEN_HOURS_TO_DISPLAY)}
                 Period.DAYS ->{forecast.daily.take(DETAIL_SCREEN_DAYS_TO_DISPLAY)}
