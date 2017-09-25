@@ -110,6 +110,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
     override fun onStart() {
         super.onStart()
 
+        // Display zip entry dialog if no zipcode is selected
         _weatherViewModel?.let {
             it.selectedLocation.observe(this@ForecastSummaryFragment, Observer { loc ->
                 if (loc == null)
