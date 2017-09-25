@@ -1,9 +1,6 @@
 package com.loneoaktech.test.weatherapp.di
 
-import com.loneoaktech.test.weatherapp.ForecastSummaryFragment
-import com.loneoaktech.test.weatherapp.MainActivity
-import com.loneoaktech.test.weatherapp.WeatherAppApplication
-import com.loneoaktech.test.weatherapp.ZipEntryFragment
+import com.loneoaktech.test.weatherapp.*
 import com.loneoaktech.test.weatherapp.api.AndroidZipLocationService
 import com.loneoaktech.test.weatherapp.api.ForecastLocationService
 import com.loneoaktech.test.weatherapp.api.HiottDarkSkyService
@@ -61,5 +58,9 @@ abstract class FragmentBuilderModule {
     @Suppress("unused")
     @ContributesAndroidInjector
     abstract fun contributeZipEntryFragment(): ZipEntryFragment
+
+    @Suppress("unused")
+    @ContributesAndroidInjector
+    abstract fun contributeDataPointListFragment(): DataPointListFragment
 }
 

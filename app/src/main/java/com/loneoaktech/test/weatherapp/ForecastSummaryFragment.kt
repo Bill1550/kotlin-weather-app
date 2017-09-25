@@ -44,11 +44,13 @@ class ForecastSummaryFragment : Fragment(), Injectable {
     @Inject
     lateinit var _locationRepo: SelectedLocationRepository
 
-    lateinit var _hourlyAdapter : DataPointRecyclerViewAdapter
-    lateinit var _dailyAdapter : DataPointRecyclerViewAdapter
+    lateinit var _hourlyAdapter: DataPointRecyclerViewAdapter
+    lateinit var _dailyAdapter: DataPointRecyclerViewAdapter
 
-    private val hourFormat = SimpleDateFormat("hh:mm aa", Locale.US)
-    private val dayFormat = SimpleDateFormat("EEEEEE", Locale.US)
+    companion object {
+        private val hourFormat = SimpleDateFormat("hh:mm aa", Locale.US)
+        private val dayFormat = SimpleDateFormat("EEEEEE", Locale.US)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -68,7 +70,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
                 iv.hourNameText.text = hourFormat.format(Date(dp.time))
                 iv.hourSummaryText.text = dp.summary
                 iv.temperatureText.text = getString(R.string.temperature_format, dp.temperature)
-                iv.setOnClickListener{Timber.i("item click")}
+                iv.setOnClickListener{ (activity as? MainActivity)?.showPeriodList(DataPointListFragment.Period.HOURS)}
             }
 
             with(rv.hourlyRecyclerView){
@@ -83,7 +85,7 @@ class ForecastSummaryFragment : Fragment(), Injectable {
                 iv.daySummaryText.text = dp.summary
                 iv.maxTemperatureText.text = getString(R.string.temperature_format, dp.temperatureMax)
                 iv.minTemperatureText.text = getString(R.string.temperature_format, dp.temperatureMin)
-                iv.setOnClickListener{Timber.i("item click")}
+                iv.setOnClickListener{(activity as? MainActivity)?.showPeriodList(DataPointListFragment.Period.DAYS)}
             }
 
             with(rv.dailyRecyclerView){

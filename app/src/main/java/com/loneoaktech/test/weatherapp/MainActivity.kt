@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     companion object {
         val TAG_FORECAST_SUMMARY = "forecast_summary"
+        val TAG_FORECAST_DETAIL = "forecast_detail"
         val TAG_ZIP_ENTRY = "zip_entry"
     }
 
@@ -66,8 +67,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             else -> super.onOptionsItemSelected(item)
         }
 
+    // API for fragments
     fun showLocationEntryDialog(){
         ZipEntryFragment().show(supportFragmentManager, TAG_ZIP_ENTRY)
+    }
+
+    fun showPeriodList(period: DataPointListFragment.Period ){
+        supportFragmentManager.beginTransaction()
+                .addToBackStack("HOME")
+                .replace(R.id.fragment, DataPointListFragment.createFragment(period), TAG_FORECAST_DETAIL)
+                .commit()
     }
 
 
@@ -87,7 +96,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 }
 
 
-inline fun <T> T.applyIf(condition: Boolean, block: T.()-> Unit ): T{ if (condition) block(); return this }
 
 inline fun <T> T.applyIfAtLeastSdk(api: Int, block: T.()->Unit): T {
     if (Build.VERSION.SDK_INT>=api )  block()
