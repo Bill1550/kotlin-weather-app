@@ -107,6 +107,17 @@ class ForecastSummaryFragment : Fragment(), Injectable {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        _weatherViewModel?.let {
+            it.selectedLocation.observe(this@ForecastSummaryFragment, Observer { loc ->
+                if (loc == null)
+                    (activity as? MainActivity)?.showLocationEntryDialog()
+            })
+        }
+    }
+
     private fun displayForecast(forecastResource: AsyncResource<Forecast>) {
         Timber.i("display forecast result: %s", forecastResource)
         when( forecastResource.status ){
