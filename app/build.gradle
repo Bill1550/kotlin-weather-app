@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'                // Kotlin specific annotation process
 
 android {
     compileSdkVersion projectTargetSdkVersion
-    buildToolsVersion '26.0.0'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.loneoaktech.test.weatherapp"
         minSdkVersion projectMinSdkVersion
