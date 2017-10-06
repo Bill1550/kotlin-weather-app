@@ -6,6 +6,7 @@ import com.loneoaktech.test.weatherapp.WeatherAppApplication
 import com.loneoaktech.test.weatherapp.updater.ForecastUpdateJobService
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
@@ -20,7 +21,7 @@ import javax.inject.Singleton
                        AppModule::class,
                        ActivitiesModule::class
                      ])
-interface AppComponent {
+interface AppComponent : AndroidInjector<WeatherAppApplication> {
     @Component.Builder
     interface Builder {
         @BindsInstance fun application(application: Application): Builder
@@ -28,7 +29,7 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(app: WeatherAppApplication)
+//    fun inject(app: WeatherAppApplication)
     fun inject(jobSvc: ForecastUpdateJobService)
 }
 

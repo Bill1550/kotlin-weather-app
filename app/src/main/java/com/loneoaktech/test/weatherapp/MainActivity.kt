@@ -7,22 +7,17 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.loneoaktech.test.weatherapp.updater.ForecastUpdateJobService
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import javax.inject.Inject
 
 private const val UPDATER_JOB_ID = 142
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class MainActivity : DaggerAppCompatActivity() {
 
     companion object {
         val TAG_FORECAST_SUMMARY = "forecast_summary"
@@ -30,11 +25,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val TAG_ZIP_ENTRY = "zip_entry"
     }
 
-    // Fragment injection stuff
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
+//    // Fragment injection stuff
+//    @Inject
+//    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+//
+//    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -22,6 +22,7 @@ import com.loneoaktech.test.weatherapp.ui.DataPointRecyclerViewAdapter
 import com.loneoaktech.test.weatherapp.ui.getWeatherIcon
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModel
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModelFactory
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_forecast_summary.*
 import kotlinx.android.synthetic.main.fragment_forecast_summary.view.*
 import kotlinx.android.synthetic.main.list_item_daily_forcast.view.*
@@ -36,7 +37,7 @@ import javax.inject.Inject
  *
  * Created by BillH on 9/18/2017.
  */
-class ForecastSummaryFragment : Fragment(), Injectable {
+class ForecastSummaryFragment : DaggerFragment() {
     private var _weatherViewModel: WeatherViewModel? = null
 
     @Inject

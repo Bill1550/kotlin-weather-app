@@ -9,6 +9,7 @@ import com.loneoaktech.test.weatherapp.db.ForecastDao
 import com.loneoaktech.test.weatherapp.db.SelectedLocationDao
 import com.loneoaktech.test.weatherapp.db.SharedPrefsSelectedLocationDao
 import com.loneoaktech.test.weatherapp.db.SharedPrfsForecastDao
+import com.loneoaktech.test.weatherapp.updater.ForecastUpdateJobService
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
@@ -45,6 +46,10 @@ abstract class ActivitiesModule {
     @Suppress("unused")
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class] )
     abstract fun contributeMainActivity(): MainActivity
+
+    @Suppress("unused")
+    @ContributesAndroidInjector
+    abstract fun contributeUpdateService() : ForecastUpdateJobService
 }
 
 

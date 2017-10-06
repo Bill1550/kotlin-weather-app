@@ -4,12 +4,10 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.loneoaktech.test.weatherapp.di.Injectable
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.Forecast
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
@@ -17,6 +15,7 @@ import com.loneoaktech.test.weatherapp.repository.WeatherRepository
 import com.loneoaktech.test.weatherapp.ui.DataPointRecyclerViewAdapter
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModel
 import com.loneoaktech.test.weatherapp.viewmodel.WeatherViewModelFactory
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_forecast_data_point_list.*
 import kotlinx.android.synthetic.main.fragment_forecast_data_point_list.view.*
 import kotlinx.android.synthetic.main.list_item_daily_forcast.view.*
@@ -31,7 +30,7 @@ import javax.inject.Inject
  *
  * Created by BillH on 9/24/2017.
  */
-class DataPointListFragment : Fragment(), Injectable {
+class DataPointListFragment : DaggerFragment() {
     enum class Period {HOURS, DAYS}
 
 

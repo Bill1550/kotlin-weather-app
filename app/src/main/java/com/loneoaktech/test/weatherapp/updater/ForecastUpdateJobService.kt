@@ -12,6 +12,7 @@ import com.loneoaktech.test.weatherapp.di.weatherApp
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.repository.SelectedLocationRepository
 import com.loneoaktech.test.weatherapp.repository.WeatherRepository
+import dagger.android.AndroidInjection
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,6 +28,7 @@ class ForecastUpdateJobService : JobService(), LifecycleOwner{
     private val _lifeCycleRegistry = LifecycleRegistry(this)
 
     override fun onCreate() {
+        AndroidInjection.inject(this)
         super.onCreate()
 
         DaggerAppComponent.builder()

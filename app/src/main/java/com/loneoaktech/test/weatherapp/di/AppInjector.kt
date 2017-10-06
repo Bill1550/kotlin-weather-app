@@ -21,7 +21,7 @@ import dagger.android.support.HasSupportFragmentInjector
  */
 interface Injectable
 
-object AppInjector{
+object AppInjector{       // Replaced by dagger.android and @ContributesAndroidInjector
 
     fun init(app: Application){
         app.registerActivityLifecycleCallbacks( object: Application.ActivityLifecycleCallbacks {

@@ -4,15 +4,19 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v7.app.AppCompatDialogFragment
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
+import com.loneoaktech.test.weatherapp.R.id.errorText
+import com.loneoaktech.test.weatherapp.R.id.locationNameText
 import com.loneoaktech.test.weatherapp.di.Injectable
 import com.loneoaktech.test.weatherapp.model.ForecastLocation
 import com.loneoaktech.test.weatherapp.model.ZipCode
 import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModel
 import com.loneoaktech.test.weatherapp.viewmodel.LocationViewModelFactory
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_zip_entry.*
 import kotlinx.android.synthetic.main.fragment_zip_entry.view.*
 import timber.log.Timber
@@ -22,7 +26,7 @@ import javax.inject.Inject
  *
  * Created by BillH on 9/16/2017.
  */
-class ZipEntryFragment : DialogFragment(), Injectable {
+class ZipEntryFragment : AppCompatDialogFragment() {
     private var _locationModel: LocationViewModel? = null
 
     @Inject
@@ -48,6 +52,7 @@ class ZipEntryFragment : DialogFragment(), Injectable {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        AndroidSupportInjection.inject(this)
         super.onActivityCreated(savedInstanceState)
 
         _locationModel = ViewModelProviders.of(this, _locationViewModelFactory)
