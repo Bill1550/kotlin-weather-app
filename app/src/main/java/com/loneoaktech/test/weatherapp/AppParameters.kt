@@ -17,4 +17,4 @@ const val HOME_SCREEN_DAYS_TO_DISPLAY = 3
 const val DETAIL_SCREEN_HOURS_TO_DISPLAY = 24
 const val DETAIL_SCREEN_DAYS_TO_DISPLAY = 7
 
-const val DARK_SKY_API_KEY = "c87d6c62bfb0c97670c2f79eb05c699f"  // Put your key here
+const val DARK_SKY_API_KEY = ""  // Put your key here

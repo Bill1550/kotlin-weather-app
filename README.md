@@ -4,7 +4,12 @@ An example app using Architecture Components and Kotlin running under Oreo.
 
 ### Basic Function ###
 
-The application displays the current weather for a selected zip code. When weather is display, it is updated every minute.
+The application displays the current weather for a selected zip code. It is a demoonstration of using the new Android Architecture
+ Components libraries with Kotlin.
+
+ To Run this app, you must get an API key from DarkSky at https://darksky.net/dev. Insert you key into the AppParameters.kt file.
+
+When weather is displayed, it is updated every minute.
 When the app is not running, the weather for the last selected location is updated in the background so that will be displayed immediately on restart.
 The backgroud processing complies with the Oreo background restrictions by using the JobScheduler
 
