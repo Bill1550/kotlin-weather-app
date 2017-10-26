@@ -12,7 +12,7 @@ When weather is displayed, it is updated every minute.
 When the app is not running, the weather for the last selected location is updated in the background so that will be displayed immediately on restart.
 The backgroud processing complies with the Oreo background restrictions by using the JobScheduler
 
-### Libries used ###
+### Libraries used ###
 
 * Android Archtecture Components (LiveView, ViewModel, Lifecycle)
 * Dagger 2 - for dependency injection
