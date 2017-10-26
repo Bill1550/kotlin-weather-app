@@ -5,6 +5,7 @@ import com.johnhiott.darkskyandroidlib.ForecastApi
 import com.johnhiott.darkskyandroidlib.RequestBuilder
 import com.johnhiott.darkskyandroidlib.models.Request
 import com.johnhiott.darkskyandroidlib.models.WeatherResponse
+import com.loneoaktech.test.weatherapp.DARK_SKY_API_KEY
 import com.loneoaktech.test.weatherapp.model.AsyncResource
 import com.loneoaktech.test.weatherapp.model.DataPoint
 import com.loneoaktech.test.weatherapp.model.Forecast
@@ -19,7 +20,7 @@ import timber.log.Timber
  *
  * Created by BillH on 9/18/2017.
  */
-const val DARK_SKY_API_KEY = "c87d6c62bfb0c97670c2f79eb05c699f"
+
 
 class HiottDarkSkyService() : WeatherApiService {
 
