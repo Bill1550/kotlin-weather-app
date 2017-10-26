@@ -4,8 +4,7 @@ An example app using Architecture Components and Kotlin running under Oreo.
 
 ### Basic Function ###
 
-The application displays the current weather for a selected zip code. It is a demoonstration of using the new Android Architecture
- Components libraries with Kotlin.
+The application displays the current weather for a selected zip code.
 
  To Run this app, you must get an API key from DarkSky at https://darksky.net/dev. Insert you key into the AppParameters.kt file.
 
