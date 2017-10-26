@@ -24,7 +24,7 @@ class SharedPrefsSelectedLocationDao(applicationContext: Context) : SelectedLoca
     override fun loadSelectedLocation(): LiveData<ForecastLocation>
             = LocationSharedPrefsLiveData(_prefs, KEY_SELECTED_LOCATION)
 
-    override fun selectocation(location: ForecastLocation) {
+    override fun selectLocation(location: ForecastLocation) {
         try{
             _prefs.edit()
                     .putString(KEY_SELECTED_LOCATION, Gson().toJson(location))

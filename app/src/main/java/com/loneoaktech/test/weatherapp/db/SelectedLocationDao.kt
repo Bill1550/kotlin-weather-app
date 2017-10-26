@@ -11,5 +11,5 @@ import com.loneoaktech.test.weatherapp.model.ForecastLocation
 interface SelectedLocationDao {
     fun loadSelectedLocation() : LiveData<ForecastLocation>
 
-    fun selectocation(location: ForecastLocation)
+    fun selectLocation(location: ForecastLocation)
 }

@@ -63,7 +63,7 @@ class WeatherViewModelFactory
     constructor(private val weatherRep: WeatherRepository, private val locationRepo: SelectedLocationRepository)
     : ViewModelProvider.NewInstanceFactory() {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>?): T {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass != WeatherViewModel::class.java)
             throw IllegalArgumentException("incorrect ViewModel class, should be WeatherViewModel")
 

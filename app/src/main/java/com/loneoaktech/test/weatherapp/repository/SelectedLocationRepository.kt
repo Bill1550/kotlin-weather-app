@@ -30,7 +30,7 @@ class SelectedLocationRepository
         _locationService.getLocationFromZipCode(zip)
 
     fun selectLocation(location: ForecastLocation){
-        _locationDB.selectocation(location)
+        _locationDB.selectLocation(location)
     }
 }
 

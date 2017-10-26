@@ -56,7 +56,7 @@ class ZipEntryFragment : AppCompatDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         _locationModel = ViewModelProviders.of(this, _locationViewModelFactory)
-                .get(LocationViewModel::class.java)?.apply {
+                .get(LocationViewModel::class.java).apply {
             // Subscribe to the model
             clearValidation()
 
